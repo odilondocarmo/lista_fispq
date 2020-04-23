@@ -29,7 +29,7 @@ class LoadProductsData{
         }
         $('td').each((i, element) => {
           const key = $(element).find('.font02').text().trim().replace(/\s\s+/g, ' ');
-          const content = key === 'Sinônimos' ? $(element).find('.font01').text().trim().replace(/  +/g, ' ').split(';') : $(element).find('.font01').text().trim().replace(/  +/g, ' ');
+          const content = key === 'Sinônimos' || key === 'Usos' ? $(element).find('.font01').text().trim().replace(/  +/g, ' ').split(';') : $(element).find('.font01').text().trim().replace(/  +/g, ' ');
           if(key.length > 0) {
             data[key.normalize("NFD").replace(/[\u0300-\u036f]/g, "").replace(/(?!\w|\s.)/g, '') .replace(/\s+/g, ' ') .replace(/^(\s*)([\W\w]*)(\b\s*$)/g, '$2')] = {
               title: key,
@@ -43,7 +43,7 @@ class LoadProductsData{
       return result;
     }catch(err) {
       console.log(err);
-      return err;
+      return err.message;
     }
     
   }

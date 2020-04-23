@@ -5,7 +5,13 @@ module.exports = {
       return queryInterface.createTable('produtos', {
         id: {
           type: Sequelize.INTEGER,
-          
+          allowNull: false,
+          autoIncrement: true,
+          primaryKey: true,
+        },
+        nome: {
+          type: Sequelize.STRING,
+          allowNull: false,
         }
       });
   },
