@@ -6,6 +6,9 @@ const routes = new Router();
 
 routes.use(cors());
 routes.use(json());
-routes.get('/load', FispqController.index);
+routes.post('/fispq', FispqController.create);
+routes.get('/fispq/:name', FispqController.show);
+routes.get('/fispq', FispqController.index);
+
 
 module.exports = routes;

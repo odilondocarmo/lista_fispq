@@ -15,26 +15,14 @@ class LoadProductsData{
         const {data : body} = await axios(fullURL);
         const $ = cheerio.load(body);
         const data = {};
-        data.onu = {
-          title: 'Número ONU',
-          value: $('td.font07').first().text().trim().replace(/  +/g, ' ')
-        }
-        data.produto = {
-          title: 'Nome do produto',
-          value: $('td.font07').last().text().trim().replace(/  +/g, ' ')
-        }
-        data.imgLink = {
-          title: 'Rótulo de risco',
-          value: $('img').first().attr('src') ? `${baseURL}${$('img').first().attr('src')}`.replace(/\s\s+/g, '') : null
-        }
+        data.onu = $('td.font07').first().text().trim().replace(/  +/g, ' ');
+        data.produto = $('td.font07').last().text().trim().replace(/  +/g, ' ');
+        data.imgLink = $('img').first().attr('src') ? `${baseURL}${$('img').first().attr('src')}`.replace(/\s\s+/g, '') : null
         $('td').each((i, element) => {
           const key = $(element).find('.font02').text().trim().replace(/\s\s+/g, ' ');
           const content = key === 'Sinônimos' || key === 'Usos' ? $(element).find('.font01').text().trim().replace(/  +/g, ' ').split(';') : $(element).find('.font01').text().trim().replace(/  +/g, ' ');
           if(key.length > 0) {
-            data[key.normalize("NFD").replace(/[\u0300-\u036f]/g, "").replace(/(?!\w|\s.)/g, '') .replace(/\s+/g, ' ') .replace(/^(\s*)([\W\w]*)(\b\s*$)/g, '$2')] = {
-              title: key,
-              value: content
-            };
+            data[key.normalize("NFD").replace(/[\u0300-\u036f]/g, "").replace(/(?!\w|\s.)/g, '') .replace(/\s+/g, ' ') .replace(/^(\s*)([\W\w]*)(\b\s*$)/g, '$2')] = content;
           }
         });
         await delay(300);
